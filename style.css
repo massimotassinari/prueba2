@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* REMOVE STREAMLIT DEFAULT SPACING */
+.main .block-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+/* HIDE FOOTER & HEADER */
+footer {display: none !important;}
+[data-testid="stHeader"] {display: none !important;}
+
+/* GLOBAL FONT & COLOR SETTINGS */
+html, body, [class*="css"] {
+    font-family: 'Space Grotesk', sans-serif !important;
+    background-color: #0f0f0f !important;
+    color: #f6f6f6 !important;
+}
+
+/* PAGE TITLE */
+
+/* NAVIGATION CONTAINER */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #111;
+    padding: 15px 30px;
+    width: 100%;
+    border-bottom: 1px solid #333;
+}
+
+/* NAVIGATION LINKS */
+.nav-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.nav-text:hover {
+    color: #f7931a;
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* CONTENT BOXES */
+.content-box {
+    font-size: 18px;
+    font-weight: 400;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.05);
+    margin-bottom: 20px;
+}
+
+/* FORM BUTTON */
+button {
+    background-color: #f7931a !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+}
+
+
+/* Section Styling */
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    margin: 20px 0;
+}
+
+.feature-box {
+    font-size: 16px;
+    text-align: left;
+    font-weight: normal;
+}
+
+
+/* DASHBOARD PADDING */
+div.block-container.css-z5fcl4.egzxvld4 {
+    width: 100%;
+    min-width: auto;
+    max-width: initial;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-top: 15px;
+    padding-bottom: 40px;
+}
+
+/* GLOBAL FONT CHANGE */
+html, body, [class*="css"] {
+    font-family: 'Space Grotesk'; 
+}
+
+.st-ae {
+    font-family: 'Space Grotesk';
+}
+
+/* CONTAINER CSS */
+[data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
+    border: 1px groove #52546a;
+    border-radius: 10px;
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: -6px 8px 20px 1px #00000052;
+}
+
+/* CUSTOM MARKDOWN CLASSES */
+.dashboard_title {
+    font-size: 100px; 
+    font-family: 'Space Grotesk';
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    /* Remove these properties */
+    /* padding-bottom: 35px; */
+    /* box-shadow: -6px 8px 20px 1px #00000052; */
+}
+
+.stock_details {
+    font-size: 30px; 
+    font-family: 'Space Grotesk';
+    color: #f6f6f6;
+    font-weight: 900;
+    text-align: left;
+    line-height: 1;
+    padding-bottom: 10px;
+}
+
+.company_text {
+    font-size: 14px; 
+    font-family: 'Space Grotesk';
+    color: #f7931a;
+    font-weight: bold;
+    text-align: left;
+    line-height: 0.2;
+    padding-top: 10px;
+}
+
+.open_text {
+    font-size: 14px; 
+    font-family: 'Space Grotesk';
+    color: #a1a1a1;
+    font-weight: bold;
+    text-align: left;
+    line-height: 0.2;
+    padding-top: 10px;
+}
+
+.high_text {
+    font-size: 14px; 
+    font-family: 'Space Grotesk';
+    color: #ff6b08;
+    font-weight: bold;
+    text-align: left;
+    line-height: 0.2;
+    padding-top: 10px;
+}
+
+.low_text {
+    font-size: 14px; 
+    font-family: 'Space Grotesk';
+    color: #807af4;
+    font-weight: bold;
+    text-align: left;
+    line-height: 0.2;
+    padding-top: 10px;
+}
+
+.close_text {
+    font-size: 14px; 
+    font-family: 'Space Grotesk';
+    color: #01acf1;
+    font-weight: bold;
+    text-align: left;
+    line-height: 0.2;
+    padding-top: 10px;
+}
+
+/* FORM CSS */
+[data-testid="stForm"] {
+    position: relative;
+    box-shadow: -6px 8px 20px 1px #00000052;
+    border-radius: 10px;
+}
