@@ -21,7 +21,7 @@ df_company_global = pd.read_csv(COMPANY_INFO_FILE, delimiter=';')
 print("✅ Company Info Data Loaded. Shape:", df_company_global.shape)
 
 
-selected_ticker = "BLZE" 
+selected_ticker = "NKE" 
 
 # Selecting only the company to be evaluated in the model
 df_share_prices = df_share_prices_global[df_share_prices_global['Ticker'] == selected_ticker]

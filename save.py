@@ -188,3 +188,197 @@ xgb_model_final = joblib.load(model_path)
 y = function.predict_next_day_xgboost_api(xgb_model_final, ticker)
     # Button to confirm selection
 st.success(f"The prediction for tomorrows is that the stock goes: {y}")
+
+
+#######
+
+import streamlit as st
+import pandas as pd
+import functions as function
+
+st.set_page_config(
+    layout="wide",
+    page_title="Data Retrieval Page"
+)
+
+st.title("Retrieved Data")
+
+# ✅ Check if stored data exists
+if "ticker" in st.session_state:
+    st.write(f"**Selected Stock:** {st.session_state.ticker}")
+else:
+    st.warning("No stock selected.")
+
+if "df_stock" in st.session_state:
+    st.write("**Chart Data:**")
+    st.dataframe(st.session_state.df_stock)  # Display stored DataFrame
+else:
+    st.warning("No df_stock data available.")
+
+if "df_company" in st.session_state:
+    st.write("**df_company:**")
+    st.dataframe(st.session_state.df_company)  # Display stored DataFrame
+else:
+    st.warning("No df_company data available.")
+
+if "prediction_df" in st.session_state:
+    st.write("**prediction_df:**")
+    st.dataframe(st.session_state.prediction_df)  # Display stored DataFrame
+else:
+    st.warning("No prediction_df data available.")
+
+# ✅ Add a button to go back to the main trading page
+if st.button("Go Back to Trading Page"):
+    st.switch_page("pages/Live_Trading.py")  # Ensure this matches your file structure
+
+
+#######
+
+import streamlit as st
+import pandas as pd
+import numpy as np  # Import NumPy
+
+st.set_page_config(
+    layout="wide",
+    page_title="Data Retrieval Page"
+)
+
+st.title("Retrieved Data & Trading Policy")
+
+# ✅ Check if stored data exists
+if "ticker" in st.session_state:
+    st.write(f"**Selected Stock:** {st.session_state.ticker}")
+else:
+    st.warning("No stock selected.")
+
+if "df_stock" in st.session_state:
+    st.write("**Chart Data:**")
+    st.dataframe(st.session_state.df_stock)  # Display stored DataFrame
+else:
+    st.warning("No df_stock data available.")
+
+if "df_company" in st.session_state:
+    st.write("**df_company:**")
+    st.dataframe(st.session_state.df_company)  # Display stored DataFrame
+else:
+    st.warning("No df_company data available.")
+######
+######
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+st.set_page_config(
+    layout="wide",
+    page_title="Trading Strategy Analysis"
+)
+
+st.title("Trading Strategy Performance")
+
+# 🔹 General Explanation of How AI Trading Works
+st.subheader("📌 How Does AI Trading Work?")
+st.write("""
+This AI trading strategy predicts whether a stock's price will go **up** or **down** the next day:
+- **Prediction `1`** → AI expects the price to increase → **Buys stock**.
+- **Prediction `0`** → AI expects the price to decrease → **Sells stock** (or holds cash).
+The goal is to **maximize profit** by making better buy/sell decisions than a simple Buy & Hold strategy.
+""")
+
+# ✅ Ensure stored data exists
+if "prediction_df" in st.session_state and "df_stock" in st.session_state:
+
+    # Ensure `prediction_df` is a DataFrame
+    if isinstance(st.session_state.prediction_df, np.ndarray):
+        st.session_state.prediction_df = pd.DataFrame(st.session_state.prediction_df, columns=["value"])
+
+    # Handle missing last 3 days
+    missing_predictions = len(st.session_state.df_stock) - len(st.session_state.prediction_df)
+    if missing_predictions > 0:
+        trading_df = st.session_state.df_stock.iloc[:-missing_predictions].copy()
+    else:
+        trading_df = st.session_state.df_stock.copy()
+
+    # Ensure predictions exist
+    if "value" not in st.session_state.prediction_df.columns:
+        st.warning("The 'value' column is missing from prediction_df.")
+    else:
+        trading_df["Prediction"] = st.session_state.prediction_df["value"].values
+
+        if "Last Closing Price" not in trading_df.columns:
+            st.warning("Closing prices missing from stock data.")
+        else:
+            # ✅ Initialize variables
+            initial_balance = 1000
+            balance = initial_balance
+            shares = 0
+            portfolio_values = []
+            buy_sell_signals = []
+
+            # Simulate trading
+            for index, row in trading_df.iterrows():
+                closing_price = row["Last Closing Price"]
+                prediction = row["Prediction"]
+
+                if prediction == 1 and balance > 0:  # Buy signal
+                    shares = balance / closing_price
+                    balance = 0
+                    buy_sell_signals.append(("Buy", index, closing_price))
+
+                elif prediction == 0 and shares > 0:  # Sell signal
+                    balance = shares * closing_price
+                    shares = 0
+                    buy_sell_signals.append(("Sell", index, closing_price))
+
+                # Store portfolio value
+                portfolio_values.append(balance + (shares * closing_price))
+
+            # Final portfolio value
+            final_value = balance + (shares * trading_df.iloc[-1]["Last Closing Price"])
+
+            # Buy & Hold Strategy
+            initial_shares = initial_balance / trading_df.iloc[0]["Last Closing Price"]
+            hold_final_value = initial_shares * trading_df.iloc[-1]["Last Closing Price"]
+
+            # ✅ Display Final Results in a More Visual Way
+            st.subheader("💰 Final Portfolio Performance")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric(label="📌 AI Trading Strategy", value=f"${final_value:.2f}")
+            with col2:
+                st.metric(label="📌 Buy & Hold Strategy", value=f"${hold_final_value:.2f}")
+
+            # ✅ Plot Portfolio Growth Over Time
+            fig, ax = plt.subplots(figsize=(10, 5))
+            ax.plot(trading_df.index, portfolio_values, label="AI Trading Strategy", color="blue")
+            ax.axhline(y=hold_final_value, color="gray", linestyle="dashed", label="Buy & Hold Final Value")
+            ax.set_title("Portfolio Value Over Time")
+            ax.set_xlabel("Days")
+            ax.set_ylabel("Portfolio Value ($)")
+            ax.legend()
+            st.pyplot(fig)
+
+            # ✅ Plot Buy & Sell Signals on Stock Price Chart
+            fig, ax = plt.subplots(figsize=(10, 5))
+            ax.plot(trading_df.index, trading_df["Last Closing Price"], label="Stock Price", color="black")
+
+            # Add buy/sell markers
+            for action, idx, price in buy_sell_signals:
+                if action == "Buy":
+                    ax.scatter(idx, price, color="green", marker="^", label="Buy Signal" if "Buy Signal" not in ax.get_legend_handles_labels()[1] else "")
+                elif action == "Sell":
+                    ax.scatter(idx, price, color="red", marker="v", label="Sell Signal" if "Sell Signal" not in ax.get_legend_handles_labels()[1] else "")
+
+            ax.set_title("Stock Price with Buy & Sell Signals")
+            ax.set_xlabel("Days")
+            ax.set_ylabel("Stock Price ($)")
+            ax.legend()
+            st.pyplot(fig)
+
+else:
+    st.warning("No prediction_df data available.")
+
+# ✅ Button to go back to the main trading page
+if st.button("Go Back to Trading Page"):
+    st.switch_page("pages/Live_Trading.py")  # Ensure this matches your file structure

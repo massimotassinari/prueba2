@@ -62,19 +62,19 @@ def transform_dataframe(df,ticker):
     df = df[target_columns]
 
     return df
-def get_latest_stock_data(ticker):
+def get_latest_stock_data(ticker,df_stock):
     
-    simfin = api.SimFinAPI(ticker)
+    ##simfin = api.SimFinAPI(ticker)
 
     # Fetch company info and stock data (defaults to last two weeks)
-    simfin.fetch_company_info()
-    simfin.fetch_stock_data()  # Uses last two weeks by default
+    ####simfin.fetch_company_info()
+    ####simfin.fetch_stock_data()  # Uses last two weeks by default
 
     # Get and display DataFrames
     #df_company = simfin.get_company_dataframe()
     #df_stock = simfin.get_stock_dataframe()
 
-    latest_data = simfin.get_stock_dataframe()
+    latest_data = df_stock
 
     # Example usage:
     latest_data = transform_dataframe(latest_data,ticker)
@@ -89,13 +89,15 @@ def get_latest_stock_data(ticker):
     #print("🔍 Sample Data:\n", latest_data.head())
 
     return latest_data
-def predict_next_day_xgboost_api(model, ticker):
+
+
+def predict_next_day_xgboost_api(model, ticker,df_stock):
     """
     Fetch latest stock data from SimFin and predict whether the stock will go up or down.
     """
     # Fetch latest stock data from SimFin API
-    latest_data = get_latest_stock_data(ticker)
-
+    latest_data = get_latest_stock_data(ticker,df_stock)
+    print(latest_data)
     if latest_data is None:
         print("❌ Could not retrieve latest stock data. Aborting prediction.")
         return
@@ -108,7 +110,7 @@ def predict_next_day_xgboost_api(model, ticker):
     prediction = model.predict(latest_data)
     prediction_label = "📈 Up" if prediction[0] == 1 else "📉 Down"
 
-    return prediction_label
+    return prediction,prediction_label
 
 # Function to extract available companies from model filenames
 def get_available_companies(model_dir):

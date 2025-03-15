@@ -104,6 +104,8 @@ def get_df_api(ticker):
 
     df_company = simfin.get_company_dataframe()
     df_stock = simfin.get_stock_dataframe()
+    
+
 
     return df_company,df_stock
 
@@ -125,6 +127,7 @@ st.markdown(
 )
 # Define the folder path
 model_dir = "trained_models"
+
 
 # Get list of available companies
 allowed_tickers = function.get_available_companies(model_dir)
@@ -158,15 +161,19 @@ with params_col:
         st.divider()
         
         # Dropdown for selecting ticker
-        ticker = st.selectbox('Select Stock Ticker', allowed_tickers, key='ticker_selectbox')
+        ticker = st.selectbox('Select Stock Ticker', allowed_tickers, key='ticker_selectbox',index=4)
         #######
         df_company,df_stock = get_df_api(ticker)
+        # Saving chache
+        st.session_state.ticker = ticker
+        st.session_state.df_stock = df_stock.copy()
+        st.session_state.df_company = df_company.copy()
         
         ######   
         # Select data range (kept only this option)
         period_selection = st.selectbox("Select Data Range", 
                                         ["1 Day", "3 Days", "5 Days", "1 Week", "1 Month"], 
-                                        key='period_selectbox')
+                                        key='period_selectbox',index=4)
         
         # Map period selection to numerical days
         period_map = {
@@ -224,6 +231,8 @@ model_path = os.path.join(model_dir, f"xgb_model_final_{ticker}.pkl")
     # Load the model
 xgb_model_final = joblib.load(model_path)
 
-y = function.predict_next_day_xgboost_api(xgb_model_final, ticker)
+prediction_df,prediction_label = function.predict_next_day_xgboost_api(xgb_model_final, ticker,df_stock)
     # Button to confirm selection
-st.success(f"The prediction for tomorrows is that the stock goes: {y}")
+st.session_state.prediction_df = prediction_df.copy()
+
+st.success(f"The prediction for tomorrows is that the stock goes: {prediction_label}")

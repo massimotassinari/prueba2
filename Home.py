@@ -83,6 +83,7 @@ load_css()
 
 # ---------------------------
 # LAYOUT: TITLE AND NAVIGATION
+
 # ---------------------------
 col1, col2, col3 = st.columns([1, 3, 1])  # Centering the radio more
 
@@ -144,3 +145,4 @@ elif page_selection == "Meet the Team":
             
             st.markdown(f"<p style='text-align: center;'><b>{member['name']}</b></p>", unsafe_allow_html=True)
             st.markdown(f"<p style='text-align: center;'>{member['role']}</p>", unsafe_allow_html=True)
+
