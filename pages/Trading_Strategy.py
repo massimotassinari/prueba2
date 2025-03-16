@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import os  # For checking if the logo file exists
+import os 
 
 st.set_page_config(
     layout="wide",
@@ -11,7 +11,7 @@ st.set_page_config(
 
 st.title("Trading Strategy Performance")
 
-# 🔹 General Explanation of How AI Trading Works
+# General Explanation of How AI Trading Works
 st.subheader("How Does AI Trading Work?")
 st.write("""
 This AI trading strategy predicts whether a stock's price will go **up** or **down** the next day:
@@ -20,7 +20,7 @@ This AI trading strategy predicts whether a stock's price will go **up** or **do
 The goal is to **maximize profit** by making better buy/sell decisions than a simple Buy & Hold strategy.
 """)
 
-# ✅ Ensure stored data exists
+# Ensure stored data exists
 if "prediction_df" in st.session_state and "df_stock" in st.session_state and "df_company" in st.session_state:
 
     # Ensure `prediction_df` is a DataFrame
@@ -43,7 +43,7 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
         if "Last Closing Price" not in trading_df.columns:
             st.warning("Closing prices missing from stock data.")
         else:
-            # ✅ Initialize variables
+            # Initialize variables
             initial_balance = 1000
             balance = initial_balance
             shares = 0
@@ -75,7 +75,7 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
             initial_shares = initial_balance / trading_df.iloc[0]["Last Closing Price"]
             hold_final_value = initial_shares * trading_df.iloc[-1]["Last Closing Price"]
 
-            # ✅ Display Company Info (Logo, Name, Last Price)
+            # Display Company Info (Logo, Name, Last Price)
             st.subheader("Company Overview")
 
             col1, col2, col3 = st.columns([1, 3, 2])
@@ -83,17 +83,18 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
             # Get company name & ticker
             company_name = st.session_state.df_company.iloc[-1]["name"]
             last_closing_price = trading_df.iloc[-1]["Last Closing Price"]
-            ticker = st.session_state.df_company.iloc[-1]["ticker"]  # Assuming ticker is in df_company
+            ticker = st.session_state.df_company.iloc[-1]["ticker"] 
 
-            # ✅ Load the logo from the `logos/` folder
+            # Load the logo from the `logos/` folder
             logo_path = f"logos/{ticker}.png"
 
             # Check if logo exists, otherwise use placeholder
             if os.path.exists(logo_path):
                 logo_url = logo_path
             else:
-                logo_url = "https://via.placeholder.com/100"  # Default placeholder if logo is missing
-
+                logo_url = "logos/nf.png"  # Default placeholder if logo is missing
+            
+          
             with col1:
                 st.image(logo_url, width=100)
 
@@ -103,7 +104,7 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
             with col3:
                 st.metric(label="Last Closing Price", value=f"${last_closing_price:.2f}")
 
-                
+
             st.subheader("Final Portfolio Performance")
 
             col1, col2 = st.columns(2)
@@ -112,7 +113,7 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
             with col2:
                 st.metric(label="Buy & Hold Strategy", value=f"${hold_final_value:.2f}")
 
-            # ✅ Plot Portfolio Growth Over Time
+            # Plot Portfolio Growth Over Time
             fig, ax = plt.subplots(figsize=(10, 5))
             ax.plot(trading_df.index, portfolio_values, label="AI Trading Strategy", color="blue")
             ax.axhline(y=hold_final_value, color="gray", linestyle="dashed", label="Buy & Hold Final Value")
@@ -122,7 +123,7 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
             ax.legend()
             st.pyplot(fig)
 
-            # ✅ Plot Buy & Sell Signals on Stock Price Chart
+            # Plot Buy & Sell Signals on Stock Price Chart
             fig, ax = plt.subplots(figsize=(10, 5))
             ax.plot(trading_df.index, trading_df["Last Closing Price"], label="Stock Price", color="black")
 
@@ -142,6 +143,3 @@ if "prediction_df" in st.session_state and "df_stock" in st.session_state and "d
 else:
     st.warning("No prediction_df data available.")
 
-# ✅ Button to go back to the main trading page
-if st.button("Go Back to Trading Page"):
-    st.switch_page("pages/Live_Trading.py")  # Ensure this matches your file structure

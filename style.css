@@ -5,6 +5,8 @@
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
+    padding-top: 0px !important;  /* ✅ Removes extra top padding */
+    margin-top: 0px !important;   /* ✅ Removes extra top margin */
 }
 
 /* HIDE FOOTER & HEADER */
@@ -13,6 +15,7 @@ footer {display: none !important;}
 
 /* GLOBAL FONT & COLOR SETTINGS */
 html, body, [class*="css"] {
+    
     font-family: 'Space Grotesk', sans-serif !important;
     background-color: #0f0f0f !important;
     color: #f6f6f6 !important;
@@ -119,7 +122,7 @@ html, body, [class*="css"] {
 
 /* CUSTOM MARKDOWN CLASSES */
 .dashboard_title {
-    font-size: 100px; 
+    font-size: 60px !important; 
     font-family: 'Space Grotesk';
     font-weight: 700;
     line-height: 1.2;
@@ -130,7 +133,7 @@ html, body, [class*="css"] {
 }
 
 .stock_details {
-    font-size: 30px; 
+    font-size: 30px !important; 
     font-family: 'Space Grotesk';
     color: #f6f6f6;
     font-weight: 900;
@@ -140,7 +143,7 @@ html, body, [class*="css"] {
 }
 
 .company_text {
-    font-size: 14px; 
+    font-size: 24px !important; 
     font-family: 'Space Grotesk';
     color: #f7931a;
     font-weight: bold;
@@ -150,7 +153,7 @@ html, body, [class*="css"] {
 }
 
 .open_text {
-    font-size: 14px; 
+    font-size: 24px !important; 
     font-family: 'Space Grotesk';
     color: #a1a1a1;
     font-weight: bold;
@@ -160,7 +163,7 @@ html, body, [class*="css"] {
 }
 
 .high_text {
-    font-size: 14px; 
+    font-size: 24px !important; 
     font-family: 'Space Grotesk';
     color: #ff6b08;
     font-weight: bold;
@@ -170,7 +173,7 @@ html, body, [class*="css"] {
 }
 
 .low_text {
-    font-size: 14px; 
+    font-size: 24px !important; 
     font-family: 'Space Grotesk';
     color: #807af4;
     font-weight: bold;
@@ -180,7 +183,7 @@ html, body, [class*="css"] {
 }
 
 .close_text {
-    font-size: 14px; 
+    font-size: 24px !important; 
     font-family: 'Space Grotesk';
     color: #01acf1;
     font-weight: bold;
